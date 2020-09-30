@@ -18,5 +18,4 @@ class User < ApplicationRecord
   enum role: %i[user admin]
 
   validates :role, presence: true
-
 end

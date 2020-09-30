@@ -1,18 +1,17 @@
 class ApplicationController < ActionController::API
-    include Response
-    include ExceptionHandler
+  include Response
+  include ExceptionHandler
 
+  # before action to every action in controllers
+  before_action :authorize_request
+  # builds the :current_user to be shared within controllers
+  attr_reader :current_user
 
-    # before action to every action in controllers
-    before_action :authorize_request
-    # builds the :current_user to be shared within controllers 
-    attr_reader :current_user
+  private
 
-    private
+  # check valid tocken and returns user
 
-    #check valid tocken and returns user
-
-    def authorize_request
-        @current_user = (AuthorizeApiRequest.new(request.headers).call[:user])
-    end
+  def authorize_request
+    @current_user = (AuthorizeApiRequest.new(request.headers).call[:user])
+  end
 end
