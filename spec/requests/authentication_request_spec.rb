@@ -36,6 +36,16 @@ RSpec.describe "Authentication", type: :request do
             end
         end
 
+        #failed login, returns error message
+
+        context 'When request is invalid' do
+            before { post '/auth/login', params: invalid_credentials, headers: headers }
+
+            it 'returns a error message' do
+                expect(json['message']).to match(/Invalid credentials/)
+            end
+        end
+
     end
 
 end
