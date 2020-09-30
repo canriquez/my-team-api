@@ -18,6 +18,16 @@ RSpec.describe ApplicationController, type: :controller do
                 expect(subject.instance_eval {authorize_request}).to eq(user)
             end
         end
-    end
 
+        context "When auth token is not passed" do
+            before do
+                allow(request).to receive(:headers).and_return(invalid_headers)
+            end
+
+            it "raises missingToken error" do
+                expect { subject.instance_eval { authorize_request }}.
+                to raise_error(ExceptionHandler::MissingToken,/Authentication Missing/)
+            end
+        end
+    end
 end
