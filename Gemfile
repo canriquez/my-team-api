@@ -39,11 +39,11 @@ group :development do
   gem 'listen', '~> 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'hirb', '~> 0.7.3'
 end
 
 group :test do
   gem 'capybara', '~> 3.32', '>= 3.32.1'
-  gem 'factory_bot_rails'
   gem 'shoulda-matchers'
   gem 'faker'
   gem 'database_cleaner'

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_secure_password
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
   has_many :authored_posts, foreign_key: 'author_id', class_name: 'Jobpost', dependent: :destroy
   has_many :liked_applications, foreign_key: 'admin_id', class_name: 'Like', dependent: :destroy
@@ -17,4 +18,5 @@ class User < ApplicationRecord
   enum role: %i[user admin]
 
   validates :role, presence: true
+
 end
