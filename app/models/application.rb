@@ -4,6 +4,4 @@ class Application < ApplicationRecord
   has_many :likes, dependent: :destroy
 
   validates :enable, presence: true
-
-
 end

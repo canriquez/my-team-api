@@ -86,5 +86,4 @@ RSpec.configure do |config|
       example.run
     end
   end
-
 end

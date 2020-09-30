@@ -4,4 +4,5 @@ class Like < ApplicationRecord
 
   validates :type, presence: true
 
+  enum role: %i[like dislike]
 end

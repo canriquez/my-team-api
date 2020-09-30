@@ -4,10 +4,9 @@ class Jobpost < ApplicationRecord
   has_many :applicants, through: :applications, source: :applicant, dependent: :destroy
 
   validates :image, presence: true,
-                      length: {maximum: 100}
+                    length: { maximum: 100 }
   validates :enabled, presence: true
 
   validates :name, presence: true,
-                      length: {maximum: 50}
-
+                   length: { maximum: 50 }
 end
