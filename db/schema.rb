@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_09_29_222833) do
 
   create_table "jobposts", force: :cascade do |t|
     t.string "name", null: false
-    t.boolean "enable", null: false
+    t.boolean "enabled", null: false
     t.string "image", null: false
     t.integer "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
