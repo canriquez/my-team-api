@@ -6,12 +6,12 @@ RSpec.describe "Users", type: :request do
   let!(:users) { create_list(:user_user, 10) }
   let(:user_id) { users.first.id }
 
-   # GET /todos
-   describe 'GET /todos' do
+   # GET /users
+   describe 'GET /users' do
     # HTTP get request 
-    before { get '/todos' }
+    before { get '/users' }
 
-    it 'returns todos' do
+    it 'returns users' do
       # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
       expect(json.size).to eq(10)

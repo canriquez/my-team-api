@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class UsersController < ApplicationController
 
 
     #Get /users
@@ -6,4 +6,6 @@ class UserController < ApplicationController
     def index
         @users = User.all 
         json_response(@users)
+    end
+
 end
