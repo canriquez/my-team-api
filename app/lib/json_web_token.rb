@@ -12,11 +12,11 @@ class JsonWebToken
     def self.decode(token)
 
         body = JWT.decode(token, SECRET)[0]
-        HashWithIndifferentAccess.new <body>
+        HashWithIndifferentAccess.new body
             
         #rescue all errors
-    rescue JWT::DecodeError => error 
+    rescue JWT::DecodeError => e 
         #next line gets executed only in error
-       raise ExceptionHandler::InvalidToken, error.message 
+       raise ExceptionHandler::InvalidToken, e.message 
     end
 end
