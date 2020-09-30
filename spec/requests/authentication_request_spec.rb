@@ -32,6 +32,7 @@ RSpec.describe "Authentication", type: :request do
             before { post '/auth/login', params: valid_credentials, headers: headers}
 
             it 'returns an authentication token' do
+                p json
                 expect(json['auth_token']).not_to be_nil
             end
         end
@@ -40,8 +41,8 @@ RSpec.describe "Authentication", type: :request do
 
         context 'When request is invalid' do
             before { post '/auth/login', params: invalid_credentials, headers: headers }
-
             it 'returns a error message' do
+                p json['message']
                 expect(json['message']).to match(/Invalid credentials/)
             end
         end

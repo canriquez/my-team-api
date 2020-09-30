@@ -21,7 +21,7 @@ class Message
     end
 
     def self.account_created
-        "Success! - Account has been created "
+        "Success! - Account has been created."
     end
 
     def self.account_not_created

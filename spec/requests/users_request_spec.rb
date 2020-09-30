@@ -3,23 +3,33 @@ require 'rails_helper'
 RSpec.describe "Users", type: :request do
 
     # initialize test data
-  let!(:users) { create_list(:user_user, 10) }
-  let(:user_id) { users.first.id }
+    let(:user) { build(:user_user) }  
+    # Build equates to #new metod. It submit properties and 
 
-   # GET /users
-   describe 'GET /users' do
-    # HTTP get request 
-    before { get '/users' }
-
-    it 'returns users' do
-      # Note `json` is a custom helper to parse JSON responses
-      expect(json).not_to be_empty
-      expect(json.size).to eq(10)
+    # builds headers with no Authorization property on it to simulate the signup post
+    let(:headers) { valid_headers.except('Authorization')} 
+    let(:valid_attributes) do
+      attributes_for(:user_user)
     end
 
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
-    end
-  end
+    #signup test
+    describe 'POST /signup' do
+      context 'when valid attributes' do
+        before { post '/signup', params: valid_attributes.to_json, headers: headers }
 
+        it 'creates a new user' do
+          p valid_attributes
+          expect(response).to have_http_status(201)
+        end
+
+        it 'returns success message' do
+          expect(json['message']).to match(/Success! - Account has been created./)
+        end
+
+        it 'returns an authentication token' do
+          expect(json['auth_token']).not_to be_nil
+        end
+
+      end
+    end
 end
