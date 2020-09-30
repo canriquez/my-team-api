@@ -29,7 +29,23 @@ RSpec.describe "Users", type: :request do
         it 'returns an authentication token' do
           expect(json['auth_token']).not_to be_nil
         end
+      end
+
+      context 'when invalid request' do
+        before { post '/signup', params: {}, headers: headers }
+
+        it 'does not create a new user' do
+          expect(response).to have_http_status(422)
+        end
+
+        it 'returns failures message' do
+          expect(json['message'])
+          .to match(/Validation failed: Password can't be blank, Email can't be blank, Email The email is not valid, Name can't be blank, Avatar can't be blank, Role can't be blank/)
+        end
+
 
       end
+
+
     end
 end
