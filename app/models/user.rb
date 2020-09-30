@@ -3,7 +3,7 @@ class User < ApplicationRecord
     has_many :authored_posts, foreign_key: 'author_id', class_name: 'Jobpost', dependent: :destroy
     has_many :liked_applications, foreign_key: 'admin_id', class_name: 'Like', dependent: :destroy
     has_many :applications, foreign_key: 'applicant_id', class_name: 'Application', dependent: :destroy
-    #has_many :applied_jobs, through: :applications, source: :jobpost
+    has_many :applied_jobs, through: :applications, source: :jobpost, dependent: :destroy
 
     validates :email, presence: true,
                     uniqueness: { case_sensitive: false },

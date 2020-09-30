@@ -1,6 +1,7 @@
 class Jobpost < ApplicationRecord
   belongs_to :author, class_name: 'User'
   has_many :applications, dependent: :destroy
+  has_many :applicants, through: :applications, source: :applicant, dependent: :destroy
 
   validates :image, presence: true,
                       length: {maximum: 100}
