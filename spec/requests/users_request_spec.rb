@@ -36,6 +36,7 @@ RSpec.describe "Users", type: :request do
       end
     end
 
+    #signup test for user
     context 'when user valid attributes' do
       before { post '/signup', params: valid_attributes_user.to_json, headers: headers }
 
@@ -51,6 +52,27 @@ RSpec.describe "Users", type: :request do
 
       it 'returns an authentication token' do
         expect(json['auth_token']).not_to be_nil
+      end
+    end
+
+    #show test for user
+    context 'when user valid attributes' do
+      let(:user) {create(:user_user)}
+      let(:headers) { valid_headers }
+      before { get "/users/#{user.id}", headers: headers }
+
+      it 'shows basic user information' do
+        p headers
+        p valid_attributes_user
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns success message' do
+        expect(json['message']).to match(/successfull request/)
+      end
+
+      it 'returns user basic information' do
+        expect(json['user'][0]['id']).to be(9)
       end
     end
 

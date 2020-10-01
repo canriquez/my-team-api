@@ -19,6 +19,8 @@ class User < ApplicationRecord
 
   validates :role, presence: true
 
+  #basic info method to respond on successfull user authentication
+  
   def self.basic_info(email)
     User.select("
       users.id, 

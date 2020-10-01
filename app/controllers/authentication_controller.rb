@@ -9,7 +9,6 @@ class AuthenticationController < ApplicationController
       ).call
 
     if auth_token 
-        #@user = User.select("users.id, users.email, users.name, users.role, users.name, users.updated_at").where(email: [auth_params[:email]])
         @user = User.basic_info(auth_params[:email])
     elsif 
         @user = {}

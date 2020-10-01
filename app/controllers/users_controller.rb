@@ -10,6 +10,12 @@ class UsersController < ApplicationController
 
   #show
 
+  def show
+    @user = User.find(params[:id])
+    response = { message: 'successfull request', user: User.basic_info(@user.email)}
+    json_response(response)
+  end
+
   # create |  POST /signup
 
   def create
@@ -30,4 +36,5 @@ class UsersController < ApplicationController
       :password
     )
   end
+
 end
