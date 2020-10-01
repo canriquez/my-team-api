@@ -3,6 +3,9 @@ class JsonWebToken
 
   SECRET = Rails.application.secrets.secret_key_base
 
+  puts '|| current secret ||'
+  p SECRET
+
   def self.encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
     # encodes payload using Rails secret keybase
@@ -11,6 +14,8 @@ class JsonWebToken
 
   def self.decode(token)
     body = JWT.decode(token, SECRET)[0]
+    puts '||| -- decoding --- |||'
+    p body
     HashWithIndifferentAccess.new body
 
   # rescue all errors

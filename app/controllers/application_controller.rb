@@ -12,6 +12,8 @@ class ApplicationController < ActionController::API
   # check valid tocken and returns user
 
   def authorize_request
+    puts '_ ||| HEADERS RECIEVED ||| _'
+    p request.headers['Authorization']
     @current_user = (AuthorizeApiRequest.new(request.headers).call[:user])
   end
 end

@@ -73,7 +73,7 @@ RSpec.describe "Users", type: :request do
       end
 
       it 'returns user basic information' do
-        expect(json['user'][0]['id']).to be(9)
+        expect(json['user'][0]['id']).to eq(user.id)
       end
     end
 
