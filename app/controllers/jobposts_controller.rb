@@ -2,7 +2,7 @@ class JobpostsController < ApplicationController
     #skip_before_action :authorize_request, only: :create
     before_action :authorised_user, only: %i[index show create update]
 
-    before_action :authorised_update, only: %i[update]
+    before_action :authorised_update, only: %i[update destroy]
     #index
 
     def index
@@ -36,6 +36,13 @@ class JobpostsController < ApplicationController
             response = { message: 'error updating'}
             json_response(response)
         end
+    end
+
+    def destroy
+        puts ' ----------- We get to destroy ------------'
+        @jobpost.destroy
+        response = { message: 'successfull destroy request', jobpost: @jobpost}
+        json_response(response)
     end
 
 
