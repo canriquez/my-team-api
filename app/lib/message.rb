@@ -30,4 +30,12 @@ class Message
   def self.expired_token
     "Authentication expired, please login again"
   end
+
+  def self.only_admin
+    "Sorry, you need 'admin' rights to access this resource"
+  end
+
+  def self.jobpost_created
+    "Success!. New Jobpost created."
+  end
 end
