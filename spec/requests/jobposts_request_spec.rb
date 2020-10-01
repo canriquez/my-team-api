@@ -59,7 +59,6 @@ RSpec.describe "Jobposts API", type: :request do
             it 'returns 1 jobposts' do
                 expect(json['jobpost']).not_to be_empty
             end
-
             it 'returns status code 200' do
                 expect(response).to have_http_status(200)
             end
@@ -68,28 +67,90 @@ RSpec.describe "Jobposts API", type: :request do
 
     # create jobpost
     describe 'POST /jobposts/' do
-
         context 'creates a new job post with user_admin as author' do
             let(:valid_post_attributes) { FactoryBot.attributes_for(:jobpost, author_id: admin.id) }
-            #before { post '/signup', params: valid_attributes_admin.to_json, headers: headers }
-            #before { post "/jobposts", params: valid_post_attributes.to_json, headers: headers_admin }
-
             it 'creates a new jobpost in database' do
-                p valid_post_attributes
-                p headers_admin
                 expect do
                     post "/jobposts", params: valid_post_attributes.to_json, headers: headers_admin
                 end.to change(Jobpost, :count).by(1)
             end
-
             it 'returns success message' do
                 post "/jobposts", params: valid_post_attributes.to_json, headers: headers_admin
                 expect(json['message']).to match(/Success!. New Jobpost created./)
             end
-
-
         end
     end
+
+    #update jobpost done by author
+    context 'Update jobpost :name with author valid attributes' do
+        let(:admin) {create(:admin_user)}
+        let(:oldjob) {create(:jobpost, author_id: admin.id)}
+        let(:headers) { user_type_valid_headers(admin) }
+        let(:valid_admin_data_change) { FactoryBot.attributes_for(:jobpost, name: 'Best jobpost') }
+  
+        before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers }
+  
+        it 'gets right status response 200' do
+          puts '-|||-- update job name test ---|||'
+          p headers
+          expect(response).to have_http_status(200)
+        end
+  
+        it 'returns success message' do
+          expect(json['message']).to match(/successfull request/)
+        end
+  
+        it 'returns user basic information' do
+            puts 'jobpost'
+            p json
+          expect(json['jobpost']['name']).to eq('Best jobpost')
+        end
+      end
+
+
+    #fails to update admin's1 jobpost when admin2 attempts update
+    context 'fails to Update jobpost :name with invalid admin author ' do
+        let(:admin) {create(:admin_user)}
+        let(:oldjob) {create(:jobpost, author_id: admin.id)}
+
+        let(:admin2) {create(:admin_user)}
+        let(:headers2) { user_type_valid_headers(admin2) }
+        let(:valid_admin_data_change) { FactoryBot.attributes_for(:jobpost, name: 'Best jobpost') }
+  
+        before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers2 }
+  
+        it 'gets status response 401' do
+          puts '-|||-- update job name test ---|||'
+          p headers
+          expect(response).to have_http_status(401)
+        end
+  
+        it 'returns unauthorised request message' do
+          expect(json['message']).to match(/Unauthorized request/)
+        end
+      end
+
+      #fails to update admin's1 jobpost when normal user attempts update
+    context 'fails to Update jobpost :name with user role ' do
+        let(:admin) {create(:admin_user)}
+        let(:oldjob) {create(:jobpost, author_id: admin.id)}
+
+        let(:user1) {create(:user_user)}
+        let(:headers) { user_type_valid_headers(user1) }
+        let(:valid_admin_data_change) { FactoryBot.attributes_for(:jobpost, name: 'Best jobpost') }
+  
+        before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers }
+  
+        it 'gets status response 401' do
+          puts '-|||-- update job name test ---|||'
+          p headers
+          expect(response).to have_http_status(401)
+        end
+  
+        it 'returns unauthorised request message' do
+          expect(json['message']).to match(/Sorry, you need 'admin' rights to access this resource/)
+        end
+      end
 
 
 end
