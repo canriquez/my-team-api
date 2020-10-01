@@ -62,6 +62,7 @@ RSpec.describe "Users", type: :request do
       before { get "/users/#{user.id}", headers: headers }
 
       it 'shows basic user information' do
+        puts '-|||-- show test ---|||'
         p headers
         p valid_attributes_user
         expect(response).to have_http_status(200)
@@ -90,5 +91,51 @@ RSpec.describe "Users", type: :request do
              Name can't be blank, Avatar can't be blank, Role can't be blank`)
       end
     end
+
+
+    #update name test
+    context 'Update when user :name with valid attributes' do
+      let(:user) {create(:user_user)}
+      let(:headers) { valid_headers }
+      let(:valid_user_data_change) { FactoryBot.attributes_for(:user_user, name: 'pedro') }
+
+      before { put "/users/#{user.id}", params: valid_user_data_change.to_json, headers: headers }
+
+      it 'gets right status response 200' do
+        puts '-|||-- update name test ---|||'
+        p headers
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns success message' do
+        expect(json['message']).to match(/successfull request/)
+      end
+
+      it 'returns user basic information' do
+        expect(json['user'][0]['name']).to eq('pedro')
+      end
+    end
+
+    #update name when user not the owner
+    context 'Update when user :name when user is not the owner' do
+      let(:user) {create(:user_user)}
+      let(:user1) {create(:user_user)}
+      let(:headers) { valid_headers }
+      let(:valid_user_data_change) { FactoryBot.attributes_for(:user_user, name: 'pedro') }
+
+      before { put "/users/#{user1.id}", params: valid_user_data_change.to_json, headers: headers }
+
+      it 'fails to get right status response 200' do
+        puts "-|||-- update other's name test ---|||"
+        p headers
+        expect(response).not_to have_http_status(200)
+      end
+
+      it 'fails to returns success message' do
+        expect(json['message']).to match(/Unauthorized request/)
+      end
+
+    end
+
   end
 end
