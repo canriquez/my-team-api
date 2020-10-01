@@ -18,4 +18,18 @@ class User < ApplicationRecord
   enum role: %i[user admin]
 
   validates :role, presence: true
+
+  def self.basic_info(email)
+    User.select("
+      users.id, 
+      users.email, 
+      users.name, 
+      users.role, 
+      users.name, 
+      users.updated_at
+      ")
+      .where(email: [email])
+  end
+
+
 end
