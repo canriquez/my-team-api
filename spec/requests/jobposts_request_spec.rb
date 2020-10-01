@@ -93,8 +93,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers }
     
             it 'gets right status response 200' do
-            puts '-|||-- update job name test ---|||'
-            p headers
             expect(response).to have_http_status(200)
             end
     
@@ -103,8 +101,6 @@ RSpec.describe "Jobposts API", type: :request do
             end
     
             it 'returns user basic information' do
-                puts 'jobpost'
-                p json
             expect(json['jobpost']['name']).to eq('Best jobpost')
             end
         end
@@ -122,8 +118,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers2 }
     
             it 'gets status response 401' do
-            puts '-|||-- update job name test ---|||'
-            p headers
             expect(response).to have_http_status(401)
             end
     
@@ -144,8 +138,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { put "/jobposts/#{oldjob.id}", params: valid_admin_data_change.to_json, headers: headers }
     
             it 'gets status response 401' do
-            puts '-|||-- update job name test ---|||'
-            p headers
             expect(response).to have_http_status(401)
             end
     
@@ -166,8 +158,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { delete "/jobposts/#{oldjob.id}", headers: headers }
     
             it 'gets right status response 200' do
-            puts '-|||-- destroy job name test ---|||'
-            p headers
             expect(response).to have_http_status(200)
             end
     
@@ -176,8 +166,6 @@ RSpec.describe "Jobposts API", type: :request do
             end
     
             it 'returns user basic information' do
-                puts 'jobpost'
-                p json
             expect(json['jobpost']['name']).to eq(oldjob.name)
             end
         end
@@ -192,8 +180,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { delete "/jobposts/#{oldjob.id}", headers: headers2 }
     
             it 'gets status response 401' do
-            puts '-|||-- destroy job name test ---|||'
-            p headers
             expect(response).to have_http_status(401)
             end
     
@@ -212,8 +198,6 @@ RSpec.describe "Jobposts API", type: :request do
             before { delete "/jobposts/#{oldjob.id}", headers: headers }
     
             it 'gets status response 401' do
-            puts '-|||-- destroy jobpost ---|||'
-            p headers
             expect(response).to have_http_status(401)
             end
     
@@ -221,8 +205,6 @@ RSpec.describe "Jobposts API", type: :request do
             expect(json['message']).to match(/Unauthorized request/)
             end
         end
-
     end
-
-
+ 
 end

@@ -35,6 +35,10 @@ class Message
     "Sorry, you need 'admin' rights to access this resource"
   end
 
+  def self.only_admin_or_owner
+    "Sorry, only 'owner' or 'admin' can access this resource"
+  end
+
   def self.jobpost_created
     "Success!. New Jobpost created."
   end

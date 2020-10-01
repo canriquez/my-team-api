@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2020_09_29_222833) do
 
   create_table "applications", force: :cascade do |t|
     t.integer "applicant_id"
-    t.boolean "enable", null: false
+    t.boolean "enabled", null: false
     t.bigint "jobpost_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
