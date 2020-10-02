@@ -36,7 +36,7 @@ class Message
   end
 
   def self.only_admin_or_owner
-    "Sorry, only 'owner' or 'admin' can access this resource"
+    "Sorry, only 'owner' or 'admin' can execute this action"
   end
 
   def self.jobpost_created

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Applications API", type: :request do
 
+    #get application's total list 
     describe 'GET /applications' do
         let!(:admin) {create(:admin_user)}
         let!(:headers_admin) { user_type_valid_headers(admin) }
@@ -91,7 +92,7 @@ RSpec.describe "Applications API", type: :request do
         context 'when user is not the owner applicant' do
             before { get "/applications/#{application1.id}", params:{}, headers: headers_user2 }
             it 'returns a unauthorized message' do
-                expect(json['message']).to match(/Sorry, only 'owner' or 'admin' can access this resource/)
+                expect(json['message']).to match(/Sorry, only 'owner' or 'admin' can execute this action/)
             end
 
             it 'returns status code 401' do
@@ -99,6 +100,68 @@ RSpec.describe "Applications API", type: :request do
             end
         end
     end
+
+    # Destroy method tests
+    describe 'DELETE /applications/:id' do
+
+        let!(:admin) {create(:admin_user)}
+        let!(:headers_admin) { user_type_valid_headers(admin) }
+    
+        let!(:user1) {create(:user_user)}
+        let!(:user2) {create(:user_user)}
+        let!(:headers_user1) { user_type_valid_headers(user1) }
+        let!(:headers_user2) { user_type_valid_headers(user2) }
+
+        let!(:jobpost1) {create(:jobpost, author: admin)}
+
+        let!(:application1) {create(:application, jobpost: jobpost1, applicant_id: user1.id)}
+        let!(:application2) {create(:application, jobpost: jobpost1, applicant_id: user2.id)}
+        #let(:jobpost1_id) { applications.first.id}
+
+        context 'with author valid attributes' do
+    
+            before { delete "/applications/#{application1.id}", headers: headers_user1 }
+    
+            it 'gets right status response 200' do
+            expect(response).to have_http_status(200)
+            end
+    
+            it 'returns success message' do
+            expect(json['message']).to match(/successfull destroy request/)
+            end
+    
+            it 'returns user basic information' do
+                expect(json['application']['id']).to eq(application1.id)
+            end
+        end
+
+        context 'with admin valid attributes' do
+            before { delete "/applications/#{application1.id}", headers: headers_admin }
+    
+            it 'gets status response 200' do
+                expect(response).to have_http_status(200)
+            end
+    
+            it 'returns success basic info' do
+                expect(json['application']['id']).to eq(application1.id)
+            end
+        end
+
+        context 'with role user invalid attributes' do    
+            before { delete "/applications/#{application1.id}", headers: headers_user2 }
+    
+            it 'gets status response 401' do
+            expect(response).to have_http_status(401)
+            end
+    
+            it 'returns unauthorised message' do
+            expect(json['message']).to match(/Sorry, only 'owner' or 'admin' can execute this action/)
+            end
+        end
+    end
+    
+    #disable application
+
 
 
 end

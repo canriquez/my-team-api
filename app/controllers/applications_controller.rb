@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
     before_action :admin_role_required, only: :index
-    before_action :authorised_user, only: %i[show]
+    before_action :authorised_user, only: %i[show destroy]
 
     # it shows application index for all job applications with a enabled jobpost scope
     def index
@@ -8,14 +8,24 @@ class ApplicationsController < ApplicationController
         json_response(@applications)
     end
 
+    # author user or admin can show the application
     def show
-        #@application = Application.find(params[:id])
         response = { message: 'successfull request', application: @application}
+        json_response(response)
+    end
+
+    #user or admin can destroy an application
+    def destroy
+        puts ' ----------- We get to destroy applications ------------'
+        @application.destroy
+        response = { message: 'successfull destroy request', application: @application}
         json_response(response)
     end
 
 
     private
+
+
 
     def authorised_user
         @application = Application.find(params[:id])
