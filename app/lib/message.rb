@@ -46,4 +46,8 @@ class Message
   def self.application_created 
     "Success!. You have applied for the Job."
   end
+
+  def self.like 
+    "+1"
+  end
 end

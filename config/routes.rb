@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :users 
   resources :jobposts
   resources :applications
+  resources :likes
   
   post 'auth/login', to: 'authentication#authenticate'
   post 'signup', to: 'users#create'
