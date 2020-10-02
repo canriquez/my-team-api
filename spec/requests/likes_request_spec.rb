@@ -100,7 +100,7 @@ RSpec.describe "Likes", type: :request do
             it 'returns unauthorised message' do
                 post "/likes", params: valid_post_attributes.to_json, headers: headers_user1
                 expect(json['message'])
-                .to match(/Sorry, you need 'admin' rights to access this resource/)
+                .to eq("Sorry, only 'owner' and 'admin' role can execute this action")
             end
         end
 

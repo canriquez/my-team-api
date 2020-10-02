@@ -1,5 +1,5 @@
 class LikesController < ApplicationController
-    before_action :admin_role_required, only: %i[index create]
+    before_action :admin_role_required, only: %i[index]
     before_action :authorised_user, only: %i[destroy update]
     before_action :verify_creator_authorization, only: :create
 
@@ -85,7 +85,11 @@ class LikesController < ApplicationController
         puts '||||||===== CHECKING CREATOR AUTHORIZATION ==== ||||||'
         puts "current_user id #{current_user['id']}"
         puts "New Liked record admin_id #{like_params['admin_id']}"
-        return if current_user['id'] == like_params['admin_id']
+        puts "current user's role #{current_user['role']}"
+        puts "authorization : #{current_user['id'].to_i == like_params['admin_id'].to_i }"
+        return if current_user['id'].to_i == like_params['admin_id'].to_i && current_user['role'] == 'admin'
+        response = {message: Message.only_admin_and_owner}
+        json_response(response, :unauthorized)
     end
 
 end
