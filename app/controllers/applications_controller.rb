@@ -18,8 +18,6 @@ class ApplicationsController < ApplicationController
 
     def create
         @application = Application.create!(application_params)
-        puts 'this is new application'
-        p @application
         response = { message: Message.application_created, application: @application }
         json_response(response, :created)
     end
@@ -27,19 +25,12 @@ class ApplicationsController < ApplicationController
 
     #user or admin can destroy an application
     def destroy
-        puts ' ----------- We get to destroy applications ------------'
         @application.destroy
         response = { message: 'successfull destroy request', application: @application}
         json_response(response)
     end
 
     def update
-        puts '|||||||||||||||||||||||||| UPDATE ||||||||||||||||||||'
-        p @application
-        p application_params
-        puts 'update action'
-        p @application.update!(application_params)
-        puts '-------------------------------------------------------'
         if @application.update(application_params) # if we succeed to update
             response = { message: 'successfull request', application: @application}
             json_response(response)
@@ -68,14 +59,6 @@ class ApplicationsController < ApplicationController
 
     def admin_updates_only
         @application = Application.find(params[:id]);
-
-        puts "applicant_id in current application: #{@application.applicant_id}"
-        puts "current_user id #{current_user['id']}"
-        puts "current user's role #{current_user['role']}"
-        puts "====>>> Application record to update below: "
-
-        p @application
-
         return if @application && current_user['role'] == 'admin'
         response = {message: Message.only_admin}
         json_response(response, :unauthorized)
@@ -84,11 +67,6 @@ class ApplicationsController < ApplicationController
 
     def authorised_user
         @application = Application.find(params[:id])
-        puts '||||||===== CHECKING AUTHORIZATION ==== ||||||'
-        puts "applicant_id #{@application.applicant_id}"
-        puts "current_user id #{current_user['id']}"
-        puts "current user's role #{current_user['role']}"
-
         return if @application.applicant_id == current_user['id'] || current_user['role'] == 'admin'
         response = {message: Message.only_admin_or_owner}
         json_response(response, :unauthorized)

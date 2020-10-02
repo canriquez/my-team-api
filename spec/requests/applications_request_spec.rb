@@ -230,7 +230,7 @@ RSpec.describe "Applications API", type: :request do
         end
     end
     
-    #disable application
+    #UPDATE || disable application
     describe 'PUT /applications/:id' do
         let!(:admin) {create(:admin_user)}
         let!(:headers_admin) { user_type_valid_headers(admin) }

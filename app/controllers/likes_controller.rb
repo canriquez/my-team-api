@@ -1,6 +1,7 @@
 class LikesController < ApplicationController
     before_action :admin_role_required, only: %i[index create]
     before_action :authorised_user, only: %i[destroy update]
+    before_action :verify_creator_authorization, only: :create
 
     # it shows application index for all job applications
     def index
@@ -10,8 +11,12 @@ class LikesController < ApplicationController
 
     def create
         @like = Like.create!(like_params)
-        puts 'this is new like'
+        puts '|||||||||||||||||||||||||| CREATE ||||||||||||||||||||'
         p @like
+        p like_params
+        puts 'update action'
+        p @like.update!(like_params)
+        puts '-------------------------------------------------------'
         if like_params['evaluation'] == 'like'
             response = { message: Message.like }
         elsif
@@ -54,6 +59,11 @@ class LikesController < ApplicationController
     end
 
     def admin_role_required 
+        puts '||||||===== CHECKING ADMIN ==== ||||||'
+        #puts "like creator: admin_id #{@like.admin_id}"
+        puts "current_user id #{current_user['id']}"
+        puts "current user's role #{current_user['role']}" 
+
         return if current_user['role'] == 'admin'
         response = {message: Message.only_admin}
         json_response(response, :unauthorized)
@@ -70,4 +80,12 @@ class LikesController < ApplicationController
         response = {message: Message.only_admin_and_owner}
         json_response(response, :unauthorized)
     end
+
+    def verify_creator_authorization
+        puts '||||||===== CHECKING CREATOR AUTHORIZATION ==== ||||||'
+        puts "current_user id #{current_user['id']}"
+        puts "New Liked record admin_id #{like_params['admin_id']}"
+        return if current_user['id'] == like_params['admin_id']
+    end
+
 end
