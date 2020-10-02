@@ -1,5 +1,6 @@
 class LikesController < ApplicationController
     before_action :admin_role_required, only: %i[index create]
+    before_action :authorised_user, only: %i[destroy update]
 
     # it shows application index for all job applications
     def index
@@ -19,6 +20,29 @@ class LikesController < ApplicationController
         json_response(response, :created)
     end
 
+    def update
+        puts '|||||||||||||||||||||||||| UPDATE ||||||||||||||||||||'
+        p @like
+        p like_params
+        puts 'update action'
+        p @like.update!(like_params)
+        puts '-------------------------------------------------------'
+        if @like.update(like_params) # if we succeed to update
+            response = { message: 'successfull update request', like: @like}
+            json_response(response)
+        else
+            response = { message: 'error updating'}
+            json_response(response)
+        end
+    end
+
+    def destroy
+        puts ' ----------- We get to destroy like applications ------------'
+        @like.destroy
+        response = { message: 'like destroyed', like: @like}
+        json_response(response)
+    end
+
     private
 
     def like_params
@@ -32,6 +56,18 @@ class LikesController < ApplicationController
     def admin_role_required 
         return if current_user['role'] == 'admin'
         response = {message: Message.only_admin}
+        json_response(response, :unauthorized)
+    end
+
+    def authorised_user
+        @like = Like.find(params[:id])
+        puts '||||||===== CHECKING AUTHORIZATION ==== ||||||'
+        puts "like creator: admin_id #{@like.admin_id}"
+        puts "current_user id #{current_user['id']}"
+        puts "current user's role #{current_user['role']}"
+
+        return if @like.admin_id == current_user['id'] && current_user['role'] == 'admin'
+        response = {message: Message.only_admin_and_owner}
         json_response(response, :unauthorized)
     end
 end

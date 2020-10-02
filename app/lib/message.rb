@@ -39,6 +39,11 @@ class Message
     "Sorry, only 'owner' or 'admin' can execute this action"
   end
 
+  def self.only_admin_and_owner
+    "Sorry, only 'owner' and 'admin' role can execute this action"
+  end
+
+
   def self.jobpost_created
     "Success!. New Jobpost created."
   end
