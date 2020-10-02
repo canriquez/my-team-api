@@ -17,7 +17,7 @@ RSpec.describe "Applications API", type: :request do
         #let(:jobpost1_id) { applications.first.id}
 
         context 'when user is admin ' do
-            before { get "/applications", params:{}, headers: headers_admin }
+            before { get "/applications", headers: headers_admin }
             it 'returns all job applications' do
                 puts '||||| headers on index request |||||'
                 p headers_admin
@@ -34,6 +34,9 @@ RSpec.describe "Applications API", type: :request do
         context 'when user attempts unauthorised access to applications' do
             before { get "/applications", params:{}, headers: headers_user1 }
             it 'returns a unauthorized message' do
+                puts '||||| headers on index request - unauthorised |||||'
+                p headers_admin
+                p json
                 expect(json['message']).to match(/Sorry, you need 'admin' rights to access this resource/)
             end
 
@@ -61,7 +64,7 @@ RSpec.describe "Applications API", type: :request do
 
         context 'when user is admin ' do
             before { get "/applications/#{application1.id}", params:{}, headers: headers_admin }
-            it 'returns all job applications' do
+            it 'returns the job application info' do
                 puts '||||| headers on index request |||||'
                 p headers_admin
                 p json
