@@ -11,7 +11,11 @@ class LikesController < ApplicationController
         @like = Like.create!(like_params)
         puts 'this is new like'
         p @like
-        response = { message: Message.like }
+        if like_params['evaluation'] == 'like'
+            response = { message: Message.like }
+        elsif
+            response = { message: Message.dislike }
+        end
         json_response(response, :created)
     end
 

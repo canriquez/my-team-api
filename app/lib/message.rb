@@ -50,4 +50,7 @@ class Message
   def self.like 
     "+1"
   end
+  def self.dislike 
+    "-1"
+  end
 end

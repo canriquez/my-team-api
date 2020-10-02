@@ -93,49 +93,26 @@ RSpec.describe "Likes", type: :request do
                 post "/likes", params: valid_post_attributes.to_json, headers: headers_user1
                 puts ' ======= JSON response ====='
                 p json
-                expect(json['message']).to match(/Sorry, you need 'admin' rights to access this resource/)
+                expect(json['message'])
+                .to match(/Sorry, you need 'admin' rights to access this resource/)
             end
         end
 
-        context 'creates a new application with :user role as applicant and valid credentials' do
-            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
-            it 'creates a new jobpost in database' do
-                expect do
-                    post "/applications", params: valid_post_attributes.to_json, headers: headers_invalid_user1
-                end.to change(Application, :count).by(0)
-            end
-            it 'returns unauthorised message' do
-                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                expect(json['message']).to match(/Success!. You have applied for the Job./)
-            end
-        end
 
-        context 'Attept to creates application with :user role and INVALID credentials' do
-            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
-            it 'fails to creates a new jobpost in database' do
-                expect do
-                    post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                end.to change(Application, :count).by(1)
-            end
-            it 'returns success message' do
-                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                expect(json['message']).to match(/Success!. You have applied for the Job./)
-            end
-        end
+        context 'Create action for same :admin_id & :application_id record' do
 
-        context 'Re-applies to the same job post with Valid credentials' do
-
-            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
-            it 'fails to creates a duplicated jobpost in database' do
-                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+            let(:valid_post_attributes) {FactoryBot.attributes_for(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id) }
+            it 'fails to creates a duplicated like record in database ' do
+                post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
                 expect do
-                    post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                end.to change(Application, :count).by(0)
+                    post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+                end.to change(Like, :count).by(0)
             end
             it 'returns failure message' do
-                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-                expect(json['message']).to match(/Validation failed: Applicant has already been taken/)
+                post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+                post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+                expect(json['message'])
+                .to eq("Validation failed: Application should have only one like/dislike record per :admin user.")
             end
         end
 
