@@ -42,4 +42,8 @@ class Message
   def self.jobpost_created
     "Success!. New Jobpost created."
   end
+
+  def self.application_created 
+    "Success!. You have applied for the Job."
+  end
 end

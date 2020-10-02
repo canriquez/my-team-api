@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :like do
     admin_id { 1 }
-    application { nil }
+    application_id { nil }
+    type { 1 }
   end
 end

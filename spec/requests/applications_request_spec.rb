@@ -101,6 +101,76 @@ RSpec.describe "Applications API", type: :request do
         end
     end
 
+     # create jobpost
+    describe 'POST /applications/' do
+
+        let!(:admin) {create(:admin_user)}
+        let!(:headers_admin) { user_type_valid_headers(admin) }
+    
+        let!(:user1) {create(:user_user)}
+        let!(:headers_user1) { user_type_valid_headers(user1) }
+        let!(:headers_invalid_user1) { user_type_valid_headers(user1).except('Authorization') }
+
+        let!(:jobpost1) {create(:jobpost, author: admin)}
+
+
+        context 'creates a new application with :user role as applicant and valid credentials' do
+            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
+            it 'creates a new jobpost in database' do
+                expect do
+                    post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                end.to change(Application, :count).by(1)
+            end
+            it 'returns success message' do
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                expect(json['message']).to match(/Success!. You have applied for the Job./)
+            end
+        end
+
+        context 'creates a new application with :user role as applicant and valid credentials' do
+            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
+            it 'creates a new jobpost in database' do
+                expect do
+                    post "/applications", params: valid_post_attributes.to_json, headers: headers_invalid_user1
+                end.to change(Application, :count).by(0)
+            end
+            it 'returns unauthorised message' do
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                expect(json['message']).to match(/Success!. You have applied for the Job./)
+            end
+        end
+
+        context 'Attept to creates application with :user role and INVALID credentials' do
+            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
+            it 'fails to creates a new jobpost in database' do
+                expect do
+                    post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                end.to change(Application, :count).by(1)
+            end
+            it 'returns success message' do
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                expect(json['message']).to match(/Success!. You have applied for the Job./)
+            end
+        end
+
+        context 'Re-applies to the same job post with Valid credentials' do
+
+            let(:valid_post_attributes) { FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id) }
+            it 'fails to creates a duplicated jobpost in database' do
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                expect do
+                    post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                end.to change(Application, :count).by(0)
+            end
+            it 'returns failure message' do
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+                expect(json['message']).to match(/Validation failed: Applicant has already been taken/)
+            end
+        end
+
+    end
+
     # Destroy method tests
     describe 'DELETE /applications/:id' do
 
@@ -161,7 +231,71 @@ RSpec.describe "Applications API", type: :request do
     end
     
     #disable application
+    describe 'PUT /applications/:id' do
+        let!(:admin) {create(:admin_user)}
+        let!(:headers_admin) { user_type_valid_headers(admin) }
+    
+        let!(:user1) {create(:user_user)}
+        let!(:user2) {create(:user_user)}
+        let!(:headers_user1) { user_type_valid_headers(user1) }
+
+        let!(:jobpost1) {create(:jobpost, author: admin)}
+
+        let!(:application1) {create(:application, jobpost_id: jobpost1.id, applicant_id: user1.id)}
+        let!(:application2) {create(:application, jobpost_id: jobpost1.id, applicant_id: user2.id)}
+
+        #valid updates can only change :enabled property
+        let(:valid_data_change1) {FactoryBot.attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id, enabled: false) }
+        let(:invalid_data_change) { FactoryBot.attributes_for(:application, enabled: false) }
+
+        #update application1 done by author
+        context 'Update application1 :enabled with admin valid attributes' do
+
+            before { put "/applications/#{application1.id}", params: valid_data_change1.to_json, headers: headers_admin }
+    
+            it 'gets right status response 200' do
+                puts ' |------------------ ATTEMPT TO APPLY THIS CHANGES ----------------- | '
+                p valid_data_change1
+                puts 'Application1 data:'
+                p application1
+                puts ' |------------------ ============================== ----------------- | '
 
 
+            expect(response).to have_http_status(200)
+            end
+    
+            it 'returns success message' do
+            expect(json['message']).to match(/successfull request/)
+            end
+    
+            it 'returns user basic information' do
+                puts '====== JSON RESPONSE===== '
+                p json['application']['enabled']
+            expect(json['application']['enabled']).to eq(false)
+            end
+        end
+
+        #fails to update when role is user
+        context 'fails to Update application1 :enabled with role :user ' do
+    
+            before { put "/applications/#{application1.id}", params: valid_data_change1.to_json, headers: headers_user1 }
+    
+            it 'gets unauthorised response 401' do
+                puts ' |------------------ ATTEMPT TO APPLY THIS CHANGES ----------------- | '
+                p valid_data_change1
+                puts 'Application1 data:'
+                p application1
+                puts ' |------------------ ============================== ----------------- | '
+
+
+            expect(response).to have_http_status(401)
+            end
+    
+            it 'returns only admin message' do
+            expect(json['message']).to match(/Sorry, you need 'admin' rights to access this resource/)
+            end
+    
+        end
+    end
 
 end

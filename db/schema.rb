@@ -10,23 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_29_222833) do
+ActiveRecord::Schema.define(version: 2020_10_02_163019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "applications", force: :cascade do |t|
     t.integer "applicant_id"
-    t.boolean "enabled", null: false
+    t.boolean "enabled", default: true
     t.bigint "jobpost_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["applicant_id", "jobpost_id"], name: "index_applications_on_applicant_id_and_jobpost_id", unique: true
     t.index ["jobpost_id"], name: "index_applications_on_jobpost_id"
   end
 
   create_table "jobposts", force: :cascade do |t|
     t.string "name", null: false
-    t.boolean "enabled", null: false
+    t.boolean "enabled", default: true
     t.string "image", null: false
     t.integer "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
