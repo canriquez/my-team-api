@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :jobposts
   resources :applications
   resources :likes
+
+  get 'adhome', to: 'adminhomes#adhome'
   
   post 'auth/login', to: 'authentication#authenticate'
   post 'signup', to: 'users#create'
