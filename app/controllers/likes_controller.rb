@@ -14,13 +14,11 @@ class LikesController < ApplicationController
         puts '|||||||||||||||||||||||||| CREATE ||||||||||||||||||||'
         p @like
         p like_params
-        puts 'update action'
-        p @like.update!(like_params)
         puts '-------------------------------------------------------'
         if like_params['evaluation'] == 'like'
-            response = { message: Message.like }
+            response = { message: Message.like, like: @like }
         elsif
-            response = { message: Message.dislike }
+            response = { message: Message.dislike , like: @like}
         end
         json_response(response, :created)
     end
@@ -30,9 +28,8 @@ class LikesController < ApplicationController
         p @like
         p like_params
         puts 'update action'
-        p @like.update!(like_params)
         puts '-------------------------------------------------------'
-        if @like.update(like_params) # if we succeed to update
+        if @like.update(evaluation: like_params['evaluation']) # if we succeed to update
             response = { message: 'successfull update request', like: @like}
             json_response(response)
         else
