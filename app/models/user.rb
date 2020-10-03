@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :applications, foreign_key: 'applicant_id', class_name: 'Application', dependent: :destroy
   has_many :applied_jobs, through: :applications, source: :jobpost, dependent: :destroy
 
+  has_many :job_posts, through: :authored_posts, source: :author
+
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX, message: 'The email is not valid' }
@@ -19,6 +21,8 @@ class User < ApplicationRecord
 
   validates :role, presence: true
 
+  scope :user, -> { where(role: 'user')}
+  scope :admin, -> { where(role: 'admin')}
   #basic info method to respond on successfull user authentication
   
   def self.basic_info(email)
