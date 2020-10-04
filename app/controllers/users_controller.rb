@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :authorize_request, only: :create
-  before_action :current_user_action, only: :update
-
-
+  before_action :current_user_action, only: %i[update show]
 
   def index
     @users = User.all
@@ -57,8 +55,9 @@ class UsersController < ApplicationController
     puts "user request is : #{@user['id']}"
     puts "current_user is : #{current_user['id']}"
     return if current_user['id'] == @user['id'] 
-    response = {message: Message.unauthorized}
+    response = {message: Message.only_own_account}
     json_response(response, :unauthorized)
   end
+
 
 end

@@ -54,9 +54,12 @@ RSpec.describe "Users", type: :request do
         expect(json['auth_token']).not_to be_nil
       end
     end
+  end
 
+  # show test for admin
+  describe 'GET /users/:id' do
     #show test for user
-    context 'when user valid attributes' do
+    context 'when user valid and account owner attributes' do
       let(:user) {create(:user_user)}
       let(:headers) { valid_headers }
       before { get "/users/#{user.id}", headers: headers }
@@ -77,22 +80,29 @@ RSpec.describe "Users", type: :request do
       end
     end
 
-    context 'when invalid request' do
-      before { post '/signup', params: {}, headers: headers }
+    context 'when user valid and account NOT-owner attributes' do
+        let!(:user1) {create(:user_user)}
+        let!(:user2) {create(:user_user)}
+        let!(:headers_user2) { user_type_valid_headers(user2) }
+        before { get "/users/#{user1.id}", headers: headers_user2 }
+        it 'returns 401 response' do
+          puts '-|||-- show test ---|||'
+          p headers
+          p valid_attributes_user
+          expect(response).to have_http_status(401)
+        end
 
-      it 'does not create a new user' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns failures message' do
-        expect(json['message'])
-          .to match(`Validation failed: Password can't
-            be blank, Email can't be blank, Email The email is not valid,
-             Name can't be blank, Avatar can't be blank, Role can't be blank`)
-      end
+        it 'returns unauthorised message' do
+          p json
+          expect(json['message'])
+          .to eq("Unauthorized. Can only access own account profile.")
+        end
     end
 
+  end
 
+  # PUT | update test for admin
+  describe 'PUT /users/:id' do
     #update name test
     context 'Update when user :name with valid attributes' do
       let(:user) {create(:user_user)}
@@ -132,10 +142,10 @@ RSpec.describe "Users", type: :request do
       end
 
       it 'fails to returns success message' do
-        expect(json['message']).to match(/Unauthorized request/)
+        expect(json['message'])
+          .to eq("Unauthorized. Can only access own account profile.")
       end
 
     end
-
   end
 end

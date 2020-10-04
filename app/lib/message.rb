@@ -19,6 +19,10 @@ class Message
     "Unauthorized request"
   end
 
+  def self.only_own_account
+    "Unauthorized. Can only access own account profile."
+  end
+
   def self.account_created
     "Success! - Account has been created."
   end
