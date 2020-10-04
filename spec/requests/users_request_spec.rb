@@ -36,7 +36,7 @@ RSpec.describe "Users", type: :request do
       end
     end
 
-    #signup test for user
+    # signup test for user
     context 'when user valid attributes' do
       before { post '/signup', params: valid_attributes_user.to_json, headers: headers }
 
@@ -58,9 +58,9 @@ RSpec.describe "Users", type: :request do
 
   # show test for admin
   describe 'GET /users/:id' do
-    #show test for user
+    # show test for user
     context 'when user valid and account owner attributes' do
-      let(:user) {create(:user_user)}
+      let(:user) { create(:user_user) }
       let(:headers) { valid_headers }
       before { get "/users/#{user.id}", headers: headers }
 
@@ -81,31 +81,30 @@ RSpec.describe "Users", type: :request do
     end
 
     context 'when user valid and account NOT-owner attributes' do
-        let!(:user1) {create(:user_user)}
-        let!(:user2) {create(:user_user)}
-        let!(:headers_user2) { user_type_valid_headers(user2) }
-        before { get "/users/#{user1.id}", headers: headers_user2 }
-        it 'returns 401 response' do
-          puts '-|||-- show test ---|||'
-          p headers
-          p valid_attributes_user
-          expect(response).to have_http_status(401)
-        end
+      let!(:user1) { create(:user_user) }
+      let!(:user2) { create(:user_user) }
+      let!(:headers_user2) { user_type_valid_headers(user2) }
+      before { get "/users/#{user1.id}", headers: headers_user2 }
+      it 'returns 401 response' do
+        puts '-|||-- show test ---|||'
+        p headers
+        p valid_attributes_user
+        expect(response).to have_http_status(401)
+      end
 
-        it 'returns unauthorised message' do
-          p json
-          expect(json['message'])
+      it 'returns unauthorised message' do
+        p json
+        expect(json['message'])
           .to eq("Unauthorized. Can only access own account profile.")
-        end
+      end
     end
-
   end
 
   # PUT | update test for admin
   describe 'PUT /users/:id' do
-    #update name test
+    # update name test
     context 'Update when user :name with valid attributes' do
-      let(:user) {create(:user_user)}
+      let(:user) { create(:user_user) }
       let(:headers) { valid_headers }
       let(:valid_user_data_change) { FactoryBot.attributes_for(:user_user, name: 'pedro') }
 
@@ -126,10 +125,10 @@ RSpec.describe "Users", type: :request do
       end
     end
 
-    #update name when user not the owner
+    # update name when user not the owner
     context 'Update when user :name when user is not the owner' do
-      let(:user) {create(:user_user)}
-      let(:user1) {create(:user_user)}
+      let(:user) { create(:user_user) }
+      let(:user1) { create(:user_user) }
       let(:headers) { valid_headers }
       let(:valid_user_data_change) { FactoryBot.attributes_for(:user_user, name: 'pedro') }
 
@@ -145,7 +144,6 @@ RSpec.describe "Users", type: :request do
         expect(json['message'])
           .to eq("Unauthorized. Can only access own account profile.")
       end
-
     end
   end
 end

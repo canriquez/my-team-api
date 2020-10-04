@@ -3,6 +3,6 @@ FactoryBot.define do
     name { Faker::IndustrySegments.sub_sector }
     enabled { true }
     author { 1 }
-    image { 'https://image.org'}
+    image { 'https://image.org' }
   end
 end

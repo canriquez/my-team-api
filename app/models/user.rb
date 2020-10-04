@@ -21,27 +21,27 @@ class User < ApplicationRecord
 
   validates :role, presence: true
 
-  scope :user, -> { where(role: 'user')}
-  scope :admin, -> { where(role: 'admin')}
-  #basic info method to respond on successfull user authentication
-  
+  scope :user, -> { where(role: 'user') }
+  scope :admin, -> { where(role: 'admin') }
+  # basic info method to respond on successfull user authentication
+
   def self.basic_info(email)
     User.select("
-      users.id, 
-      users.email, 
-      users.name, 
-      users.role, 
-      users.name, 
+      users.id,
+      users.email,
+      users.name,
+      users.role,
+      users.name,
       users.updated_at
       ")
       .where(email: [email])
   end
 
   def self.admin_home_page_report
-    User.select("users.id as applicant_id, 
-      users.name as applicant_name, jobposts.name as job_name, jobposts.id as job_id, 
-      jobposts.author_id, post_author.name as jobpost_author, jobposts.created_at as jobpost_date, 
-      applications.id as application_id, applications.created_at as aplication_date, likes.evaluation, 
+    User.select("users.id as applicant_id,
+      users.name as applicant_name, jobposts.name as job_name, jobposts.id as job_id,
+      jobposts.author_id, post_author.name as jobpost_author, jobposts.created_at as jobpost_date,
+      applications.id as application_id, applications.created_at as aplication_date, likes.evaluation,
       likes.admin_id, evaluators.name as evaluator_name")
       .joins(:applied_jobs)
       .joins("INNER JOIN jobposts on jobposts.id = applications.jobpost_id")
@@ -49,6 +49,4 @@ class User < ApplicationRecord
       .joins("LEFT JOIN likes on likes.application_id = applications.id")
       .joins("LEFT JOIN users AS evaluators ON evaluators.id = likes.admin_id")
   end
-
-
 end

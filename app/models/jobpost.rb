@@ -10,7 +10,6 @@ class Jobpost < ApplicationRecord
   validates :name, presence: true,
                    length: { maximum: 50 }
 
-  scope :enabled, -> { where(enabled: true)}
-  scope :disabled, -> { where(enabled: false)}
-
+  scope :enabled, -> { where(enabled: true) }
+  scope :disabled, -> { where(enabled: false) }
 end

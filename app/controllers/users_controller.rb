@@ -7,11 +7,11 @@ class UsersController < ApplicationController
     json_response(@users)
   end
 
-  #show
+  # show
 
   def show
     @user = User.find(params[:id])
-    response = { message: 'successfull request', user: User.basic_info(@user.email)}
+    response = { message: 'successfull request', user: User.basic_info(@user.email) }
     json_response(response)
   end
 
@@ -28,14 +28,13 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params) # if we succeed to update
-        response = { message: 'successfull request', user: User.basic_info(@user.email)}
-        json_response(response)
-      else
-        response = { message: 'error updating'}
-        json_response(response)
-      end
+      response = { message: 'successfull request', user: User.basic_info(@user.email) }
+      json_response(response)
+    else
+      response = { message: 'error updating' }
+      json_response(response)
+    end
   end
-
 
   private
 
@@ -50,14 +49,13 @@ class UsersController < ApplicationController
     )
   end
 
-  def current_user_action 
+  def current_user_action
     @user = User.find(params[:id])
     puts "user request is : #{@user['id']}"
     puts "current_user is : #{current_user['id']}"
-    return if current_user['id'] == @user['id'] 
-    response = {message: Message.only_own_account}
+    return if current_user['id'] == @user['id']
+
+    response = { message: Message.only_own_account }
     json_response(response, :unauthorized)
   end
-
-
 end

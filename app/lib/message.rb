@@ -47,19 +47,19 @@ class Message
     "Sorry, only 'owner' and 'admin' role can execute this action"
   end
 
-
   def self.jobpost_created
     "Success!. New Jobpost created."
   end
 
-  def self.application_created 
+  def self.application_created
     "Success!. You have applied for the Job."
   end
 
-  def self.like 
+  def self.like
     "+1"
   end
-  def self.dislike 
+
+  def self.dislike
     "-1"
   end
 end
