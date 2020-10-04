@@ -15,6 +15,10 @@ The app will offer a menu with:
     - Preferred active applicants
     - My job Posts
 
+### Live demo @Heroku
+
+[anriquez-my-team-api.herokuapp.com](https://anriquez-my-team-api.herokuapp.com)
+
 ### Database Entity Relation Diagram (ERD)
 
 ![](./public/images/erd.png)
