@@ -1,7 +1,8 @@
 class JsonWebToken
   # defines encoding secret - this could be a text though
 
-  SECRET = Rails.application.secrets.secret_key_base
+  #SECRET = Rails.application.secrets.secret_key_base
+  SECRET = Rails.application.secret_key_base
 
   puts '|| current secret ||'
   p SECRET
