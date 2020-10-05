@@ -48,4 +48,45 @@ RSpec.describe "Adminhomes", type: :request do
       end
     end
   end
+
+   # checkSignUpEmail | checkSignUpEmail
+   describe 'GET /check/:email' do
+    # update name test
+    context 'check for existing email' do
+      let(:user) { create(:user_user) }
+      let(:headers) { valid_headers.except('Authorization')  }
+      let!(:params) { {email: user.email} }
+
+      before { post "/adhome/check/", params: params.to_json, headers: headers }
+
+      it 'gets right status response 200' do
+        puts '-|||-- check email for signup---|||'
+        p json
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns taken message response' do
+        expect(json['message']).to eq("taken")
+      end
+    end
+
+    context 'check for available email' do
+      let(:user) { create(:user_user) }
+      let(:headers) { valid_headers.except('Authorization')  }
+      let!(:params) { {email: 'newUser@gmail.com'} }
+
+      before { post "/adhome/check/", params: params.to_json, headers: headers }
+
+      it 'gets right status response 200' do
+        puts '-|||-- check email for signup---|||'
+        p json
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns taken message response' do
+        expect(json['message']).to eq("newUser@gmail.com available")
+      end
+    end
+
+  end  
 end

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authorize_request, only: :create
+  skip_before_action :authorize_request, only: %i[create]
   before_action :current_user_action, only: %i[update show]
 
   def index
