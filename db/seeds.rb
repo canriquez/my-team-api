@@ -10,7 +10,7 @@ u3 = FactoryBot.create(:user_user, email: 'email5@gmail.com', avatar: 'https://a
 u4 = FactoryBot.create(:user_user, email: 'email6@gmail.com', avatar: 'https://anri-img-storage.s3.amazonaws.com/avatar/u4.png', name: 'Carolyn Format')
 u5 = FactoryBot.create(:user_user, email: 'email7@gmail.com', avatar: 'https://anri-img-storage.s3.amazonaws.com/avatar/u5.png', name: 'Pedro Syntax')
 u6 = FactoryBot.create(:user_user, email: 'email8@gmail.com', avatar: 'https://anri-img-storage.s3.amazonaws.com/avatar/u6.png', name: 'Jhonny Fastkeys')
-u7 = FactoryBot.create(:user_user, email: 'email9@gmail.com', avatar: 'https://anri-img-storage.s3.amazonaws.com/avatar/u8.png',, name: 'Lissa Learner')
+u7 = FactoryBot.create(:user_user, email: 'email9@gmail.com', avatar: 'https://anri-img-storage.s3.amazonaws.com/avatar/u8.png', name: 'Lissa Learner')
     
 jb1 = FactoryBot.create(:jobpost, author: ad1, name:'Information Technology Intern')
 jb2 = FactoryBot.create(:jobpost, author: ad1, name:'Digital Marketing Intern' )
