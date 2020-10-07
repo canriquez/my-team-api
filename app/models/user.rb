@@ -32,6 +32,7 @@ class User < ApplicationRecord
       users.name,
       users.role,
       users.name,
+      users.avatar,
       users.updated_at
       ")
       .where(email: [email])
@@ -39,7 +40,7 @@ class User < ApplicationRecord
 
   def self.admin_home_page_report
     User.select("users.id as applicant_id,
-      users.name as applicant_name, jobposts.name as job_name, jobposts.id as job_id,
+      users.name as applicant_name, users.avatar as applicant_avatar, jobposts.name as job_name, jobposts.id as job_id,
       jobposts.author_id, post_author.name as jobpost_author, jobposts.created_at as jobpost_date,
       applications.id as application_id, applications.created_at as aplication_date, likes.evaluation,
       likes.admin_id, evaluators.name as evaluator_name")
