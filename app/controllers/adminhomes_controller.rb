@@ -1,6 +1,6 @@
 class AdminhomesController < ApplicationController
   skip_before_action :authorize_request, only: %i[checkSignUpEmail]
-  before_action :admin_role_required, only: %i[adhome]
+  before_action :admin_role_required, only: %i[adhome getAdminEvaluations]
 
   # adhome
 
@@ -25,11 +25,20 @@ class AdminhomesController < ApplicationController
     end
   end
 
+  def getAdminEvaluations
+    @user = User.find(user_params[:id])
+    puts 'USER IS HERE ||| ;'
+    p @user
+    @admin_evaluations = User.admin_evaluations(@user.id)
+    json_response(@admin_evaluations)
+  end
+
   private
 
   def user_params
     params.permit(
-      :email
+      :email,
+      :id
     )
   end
 

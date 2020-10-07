@@ -73,4 +73,8 @@ class User < ApplicationRecord
     ")
   end
 
+  def self.admin_evaluations(user)
+    User.select(:evaluation, :application_id, :admin_id).joins(:liked_applications).where(id: user)
+  end
+
 end

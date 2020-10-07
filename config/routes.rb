@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :likes
 
   get 'adhome', to: 'adminhomes#adhome'
+  post 'adhome/evals', to: 'adminhomes#getAdminEvaluations'
   post 'adhome/check', to: 'adminhomes#checkSignUpEmail'
   
   post 'auth/login', to: 'authentication#authenticate'
