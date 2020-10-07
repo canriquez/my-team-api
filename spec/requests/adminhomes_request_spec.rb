@@ -24,7 +24,7 @@ RSpec.describe "Adminhomes", type: :request do
       before { get "/adhome", headers: headers_admin1 }
       it 'returns all job' do
         expect(json).not_to be_empty
-        expect(json.length).to eq(3)
+        expect(json.length).to eq(2)
       end
 
       it 'returns status code 200' do
