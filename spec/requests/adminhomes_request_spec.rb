@@ -67,26 +67,26 @@ RSpec.describe "Adminhomes", type: :request do
     let!(:like_a1_01) { create(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id) }
     let!(:like_a1_02) { create(:like, evaluation: 'dislike', application_id: application2.id, admin_id: admin1.id) }
 
-    let!(:params) { {id: admin1.id} }
+    let!(:params) { { id: admin1.id } }
 
     context 'when role is :admin ' do
       before { post "/adhome/evals/", params: params.to_json, headers: headers_admin1 }
-      #it 'returns all evaluations' do
-      #  puts "HERE JSON"
-      #  p json
-      #  expect(json).not_to be_empty
-      #  expect(json.length).to eq(2)
-      #end
+      it 'returns all evaluations' do
+        puts "HERE JSON"
+        p json
+        expect(json).not_to be_empty
+        expect(json.length).to eq(2)
+      end
 
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
 
-      #it 'returns user admin information' do
-      #  puts "HERE JSON"
-      #  p json
-      #  expect(json[0]['admin_id']).to eq(admin1.id)
-      #end
+      it 'returns user admin information' do
+        puts "HERE JSON"
+        p json
+        expect(json[0]['admin_id']).to eq(admin1.id)
+      end
     end
 
     context 'when role is :user ' do
@@ -102,14 +102,13 @@ RSpec.describe "Adminhomes", type: :request do
     end
   end
 
-
-   # checkSignUpEmail | checkSignUpEmail
-   describe 'GET /check/:email' do
+  # checkSignUpEmail | checkSignUpEmail
+  describe 'GET /check/:email' do
     # update name test
     context 'check for existing email' do
       let(:user) { create(:user_user) }
-      let(:headers) { valid_headers.except('Authorization')  }
-      let!(:params) { {email: user.email} }
+      let(:headers) { valid_headers.except('Authorization') }
+      let!(:params) { { email: user.email } }
 
       before { post "/adhome/check/", params: params.to_json, headers: headers }
 
@@ -126,8 +125,8 @@ RSpec.describe "Adminhomes", type: :request do
 
     context 'check for available email' do
       let(:user) { create(:user_user) }
-      let(:headers) { valid_headers.except('Authorization')  }
-      let!(:params) { {email: 'newUser@gmail.com'} }
+      let(:headers) { valid_headers.except('Authorization') }
+      let!(:params) { { email: 'newUser@gmail.com' } }
 
       before { post "/adhome/check/", params: params.to_json, headers: headers }
 
@@ -141,6 +140,5 @@ RSpec.describe "Adminhomes", type: :request do
         expect(json['message']).to eq("newUser@gmail.com available")
       end
     end
-
-  end  
+  end
 end

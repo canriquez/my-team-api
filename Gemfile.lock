@@ -247,7 +247,7 @@ DEPENDENCIES
   byebug
   capybara (~> 3.32, >= 3.32.1)
   database_cleaner
-  factory_bot_rails
+  factory_bot_rails (~> 6.1)
   faker
   hirb (~> 0.7.3)
   jwt (~> 2.2, >= 2.2.2)

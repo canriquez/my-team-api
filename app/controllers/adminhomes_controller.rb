@@ -5,7 +5,8 @@ class AdminhomesController < ApplicationController
   # adhome
 
   def adhome
-    @admin_home_page = User.admin_index_report
+    # @admin_home_page = User.admin_index_report
+    @admin_home_page = User.admin_full_index_report(current_user)
     json_response(@admin_home_page)
   end
 
