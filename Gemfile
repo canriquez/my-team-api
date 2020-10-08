@@ -53,6 +53,7 @@ end
 group :production do
   gem 'factory_bot_rails', '~> 6.1'
   gem 'hirb', '~> 0.7.3'
+  gem 'faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
