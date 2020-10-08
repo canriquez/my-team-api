@@ -7,7 +7,7 @@ class JsonWebToken
   puts '|| current secret ||'
   p SECRET
 
-  def self.encode(payload, exp = 5.minutes.from_now)
+  def self.encode(payload, exp = 4.hours.from_now)
     payload[:exp] = exp.to_i
     payload[:now] = Time.zone.now
     payload[:then] = 5.minutes.from_now
