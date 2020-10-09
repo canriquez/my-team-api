@@ -8,11 +8,11 @@ class AuthenticationController < ApplicationController
         auth_params[:password]
       ).call
 
-    if auth_token
-      @user = User.basic_info(auth_params[:email])
-    else
-      @user = {}
-    end
+    @user = if auth_token
+              User.basic_info(auth_params[:email])
+            else
+              {}
+            end
 
     json_response(auth_token: auth_token, user: @user)
   end

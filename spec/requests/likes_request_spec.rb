@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Likes", type: :request do
-  # get active likes (where application and job exists) total list
+RSpec.describe 'Likes', type: :request do
   describe 'GET active /likes' do
     let!(:admin1) { create(:admin_user) }
     let!(:headers_admin1) { user_type_valid_headers(admin1) }
@@ -21,7 +20,7 @@ RSpec.describe "Likes", type: :request do
     let!(:like_a1_02) { create(:like, evaluation: 'dislike', application_id: application1.id, admin_id: admin2.id) }
 
     context 'when role is :admin ' do
-      before { get "/likes", headers: headers_admin1 }
+      before { get '/likes', headers: headers_admin1 }
       it 'returns all job' do
         expect(json).not_to be_empty
         expect(json.length).to eq(2)
@@ -33,7 +32,7 @@ RSpec.describe "Likes", type: :request do
     end
 
     context 'when role is :user ' do
-      before { get "/likes", headers: headers_user1 }
+      before { get '/likes', headers: headers_user1 }
 
       it 'returns status code 401' do
         expect(response).to have_http_status(401)
@@ -62,70 +61,70 @@ RSpec.describe "Likes", type: :request do
     let!(:application2) { create(:application, jobpost: jobpost1, applicant_id: user2.id) }
 
     context 'create like record with valid credentials and :admin role' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id)
-      }
+      end
       it 'creates like' do
         expect do
-          post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+          post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
         end.to change(Like, :count).by(1)
       end
       it 'returns success message for like :evaluation' do
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
-        expect(json['message']).to eq("+1")
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
+        expect(json['message']).to eq('+1')
       end
     end
 
     context 'create like record with :evaluation = dislike with valid credentials and :admin role' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:like, evaluation: 'dislike', application_id: application1.id, admin_id: admin1.id)
-      }
+      end
       it 'creates like' do
         expect do
-          post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+          post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
         end.to change(Like, :count).by(1)
       end
       it 'returns success message for dislike :evaluation' do
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
-        expect(json['message']).to eq("-1")
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
+        expect(json['message']).to eq('-1')
       end
     end
 
     context 'fails to create like record with valid credentials and :user role' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id)
-      }
+      end
       it 'fails to creates like' do
         expect do
-          post "/likes", params: valid_post_attributes.to_json, headers: headers_user1
+          post '/likes', params: valid_post_attributes.to_json, headers: headers_user1
         end.to change(Like, :count).by(0)
       end
       it 'returns unauthorised message' do
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_user1
         expect(json['message'])
           .to eq("Sorry, only 'owner' and 'admin' role can execute this action")
       end
     end
 
     context 'Create action for same :admin_id & :application_id record' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id)
-      }
+      end
       it 'fails to creates a duplicated like record in database ' do
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
         expect do
-          post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+          post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
         end.to change(Like, :count).by(0)
       end
       it 'returns failure message' do
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
-        post "/likes", params: valid_post_attributes.to_json, headers: headers_admin1
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
+        post '/likes', params: valid_post_attributes.to_json, headers: headers_admin1
         expect(json['message'])
-          .to eq("Validation failed: Application should have only one like/dislike record per :admin user.")
+          .to eq('Validation failed: Application should have only one like/dislike record per :admin user.')
       end
     end
   end
@@ -164,7 +163,7 @@ RSpec.describe "Likes", type: :request do
       it 'returns success message' do
         delete "/likes/#{like_a1_01.id}", headers: headers_admin1
         expect(json['message'])
-          .to eq("like destroyed")
+          .to eq('like destroyed')
       end
     end
 
@@ -207,10 +206,10 @@ RSpec.describe "Likes", type: :request do
     let!(:like_a1_01) { create(:like, evaluation: 'like', application_id: application1.id, admin_id: admin1.id) }
     let!(:like_a1_02) { create(:like, evaluation: 'dislike', application_id: application1.id, admin_id: admin2.id) }
 
-    let!(:valid_2dislike_a1_01) {
+    let!(:valid_2dislike_a1_01) do
       FactoryBot
         .attributes_for(:like, evaluation: 'dislike', application_id: application1.id, admin_id: admin1.id)
-    }
+    end
 
     # update application1 done by author
     context 'Update like record :evaluation with admin valid attributes' do
@@ -222,7 +221,7 @@ RSpec.describe "Likes", type: :request do
 
       it 'returns success message' do
         expect(json['message'])
-          .to eq("successfull update request")
+          .to eq('successfull update request')
       end
 
       it 'returns user basic information' do

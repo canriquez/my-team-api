@@ -1,6 +1,6 @@
 class AdminhomesController < ApplicationController
-  skip_before_action :authorize_request, only: %i[checkSignUpEmail]
-  before_action :admin_role_required, only: %i[adhome getAdminEvaluations]
+  skip_before_action :authorize_request, only: %i[check_sign_up_email]
+  before_action :admin_role_required, only: %i[adhome getadmin_evaluations]
 
   # adhome
 
@@ -10,7 +10,7 @@ class AdminhomesController < ApplicationController
     json_response(@admin_home_page)
   end
 
-  def checkSignUpEmail
+  def check_sign_up_email
     puts '||||||| here in checkemail method ||||||'
     p user_params['email']
     p user_params
@@ -18,15 +18,14 @@ class AdminhomesController < ApplicationController
     p @email
     if @email
       response = { message: 'taken' }
-      json_response(response)
     else
       message = "#{user_params[:email]} available"
       response = { message: message }
-      json_response(response)
     end
+    json_response(response)
   end
 
-  def getAdminEvaluations
+  def getadmin_evaluations
     @user = User.find(user_params[:id])
     puts 'USER IS HERE ||| ;'
     p @user

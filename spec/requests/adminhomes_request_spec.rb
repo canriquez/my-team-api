@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Adminhomes", type: :request do
+RSpec.describe 'Adminhomes', type: :request do
   # get active applications with all admin_home required information details
   describe 'GET active /likes' do
     let!(:admin1) { create(:admin_user, name: 'Carlos') }
@@ -21,7 +21,7 @@ RSpec.describe "Adminhomes", type: :request do
     let!(:like_a1_02) { create(:like, evaluation: 'dislike', application_id: application1.id, admin_id: admin2.id) }
 
     context 'when role is :admin ' do
-      before { get "/adhome", headers: headers_admin1 }
+      before { get '/adhome', headers: headers_admin1 }
       it 'returns all job' do
         expect(json).not_to be_empty
         expect(json.length).to eq(2)
@@ -37,7 +37,7 @@ RSpec.describe "Adminhomes", type: :request do
     end
 
     context 'when role is :user ' do
-      before { get "/adhome", headers: headers_user1 }
+      before { get '/adhome', headers: headers_user1 }
 
       it 'gets status response 401' do
         expect(response).to have_http_status(401)
@@ -70,9 +70,9 @@ RSpec.describe "Adminhomes", type: :request do
     let!(:params) { { id: admin1.id } }
 
     context 'when role is :admin ' do
-      before { post "/adhome/evals/", params: params.to_json, headers: headers_admin1 }
+      before { post '/adhome/evals/', params: params.to_json, headers: headers_admin1 }
       it 'returns all evaluations' do
-        puts "HERE JSON"
+        puts 'HERE JSON'
         p json
         expect(json).not_to be_empty
         expect(json.length).to eq(2)
@@ -83,14 +83,14 @@ RSpec.describe "Adminhomes", type: :request do
       end
 
       it 'returns user admin information' do
-        puts "HERE JSON"
+        puts 'HERE JSON'
         p json
         expect(json[0]['admin_id']).to eq(admin1.id)
       end
     end
 
     context 'when role is :user ' do
-      before { post "/adhome/evals/", params: params.to_json, headers: headers_user1 }
+      before { post '/adhome/evals/', params: params.to_json, headers: headers_user1 }
 
       it 'gets status response 401' do
         expect(response).to have_http_status(401)
@@ -110,7 +110,7 @@ RSpec.describe "Adminhomes", type: :request do
       let(:headers) { valid_headers.except('Authorization') }
       let!(:params) { { email: user.email } }
 
-      before { post "/adhome/check/", params: params.to_json, headers: headers }
+      before { post '/adhome/check/', params: params.to_json, headers: headers }
 
       it 'gets right status response 200' do
         puts '-|||-- check email for signup---|||'
@@ -119,7 +119,7 @@ RSpec.describe "Adminhomes", type: :request do
       end
 
       it 'returns taken message response' do
-        expect(json['message']).to eq("taken")
+        expect(json['message']).to eq('taken')
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe "Adminhomes", type: :request do
       let(:headers) { valid_headers.except('Authorization') }
       let!(:params) { { email: 'newUser@gmail.com' } }
 
-      before { post "/adhome/check/", params: params.to_json, headers: headers }
+      before { post '/adhome/check/', params: params.to_json, headers: headers }
 
       it 'gets right status response 200' do
         puts '-|||-- check email for signup---|||'
@@ -137,7 +137,7 @@ RSpec.describe "Adminhomes", type: :request do
       end
 
       it 'returns taken message response' do
-        expect(json['message']).to eq("newUser@gmail.com available")
+        expect(json['message']).to eq('newUser@gmail.com available')
       end
     end
   end

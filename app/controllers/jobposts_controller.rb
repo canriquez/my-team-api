@@ -12,7 +12,7 @@ class JobpostsController < ApplicationController
 
   def show
     @jobpost = Jobpost.find(params[:id])
-    puts "jobposts now"
+    puts 'jobposts now'
     p @jobpost
     response = { message: 'successfull request', jobpost: @jobpost }
     json_response(response)
@@ -29,13 +29,12 @@ class JobpostsController < ApplicationController
   # create |  PUT /users/:id
 
   def update
-    if @jobpost.update(jobpost_params) # if we succeed to update
-      response = { message: 'successfull request', jobpost: @jobpost }
-      json_response(response)
-    else
-      response = { message: 'error updating' }
-      json_response(response)
-    end
+    response = if @jobpost.update(jobpost_params) # if we succeed to update
+                 { message: 'successfull request', jobpost: @jobpost }
+               else
+                 { message: 'error updating' }
+               end
+    json_response(response)
   end
 
   def destroy

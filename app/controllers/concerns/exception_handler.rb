@@ -22,11 +22,11 @@ module ExceptionHandler
 
   private
 
-  def four_twenty_two(e)
-    json_response({ message: e.message }, :unprocessable_entity)
+  def four_twenty_two(erro)
+    json_response({ message: erro.message }, :unprocessable_entity)
   end
 
-  def unauthorized_request(e)
-    json_response({ message: e.message }, :unauthorized)
+  def unauthorized_request(erro)
+    json_response({ message: erro.message }, :unauthorized)
   end
 end

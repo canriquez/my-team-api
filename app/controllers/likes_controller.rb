@@ -15,11 +15,11 @@ class LikesController < ApplicationController
     p @like
     p like_params
     puts '-------------------------------------------------------'
-    if like_params['evaluation'] == 'like'
-      response = { message: Message.like, like: @like }
-    else
-      response = { message: Message.dislike, like: @like }
-    end
+    response = if like_params['evaluation'] == 'like'
+                 { message: Message.like, like: @like }
+               else
+                 { message: Message.dislike, like: @like }
+               end
     json_response(response, :created)
   end
 
@@ -29,13 +29,12 @@ class LikesController < ApplicationController
     p like_params
     puts 'update action'
     puts '-------------------------------------------------------'
-    if @like.update(evaluation: like_params['evaluation']) # if we succeed to update
-      response = { message: 'successfull update request', like: @like }
-      json_response(response)
-    else
-      response = { message: 'error updating' }
-      json_response(response)
-    end
+    response = if @like.update(evaluation: like_params['evaluation']) # if we succeed to update
+                 { message: 'successfull update request', like: @like }
+               else
+                 { message: 'error updating' }
+               end
+    json_response(response)
   end
 
   def destroy

@@ -14,6 +14,6 @@ class ApplicationController < ActionController::API
   def authorize_request
     puts '_ |||  @authorize_request : HEADERS RECIEVED  -||| _'
     p request.headers['Authorization']
-    @current_user = (AuthorizeApiRequest.new(request.headers).call[:user])
+    @current_user = AuthorizeApiRequest.new(request.headers).call[:user]
   end
 end

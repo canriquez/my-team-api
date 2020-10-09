@@ -27,13 +27,12 @@ class UsersController < ApplicationController
   # create |  PUT /users/:id
 
   def update
-    if @user.update(user_params) # if we succeed to update
-      response = { message: 'successfull request', user: User.basic_info(@user.email) }
-      json_response(response)
-    else
-      response = { message: 'error updating' }
-      json_response(response)
-    end
+    response = if @user.update(user_params) # if we succeed to update
+                 { message: 'successfull request', user: User.basic_info(@user.email) }
+               else
+                 { message: 'error updating' }
+               end
+    json_response(response)
   end
 
   private

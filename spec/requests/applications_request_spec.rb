@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Applications API", type: :request do
+RSpec.describe 'Applications API', type: :request do
   # get application's total list
   describe 'GET /applications' do
     let!(:admin) { create(:admin_user) }
@@ -17,7 +17,7 @@ RSpec.describe "Applications API", type: :request do
     # let(:jobpost1_id) { applications.first.id}
 
     context 'when user is admin ' do
-      before { get "/applications", headers: headers_admin }
+      before { get '/applications', headers: headers_admin }
       it 'returns all job applications' do
         puts '||||| headers on index request |||||'
         p headers_admin
@@ -32,7 +32,7 @@ RSpec.describe "Applications API", type: :request do
     end
 
     context 'when user attempts unauthorised access to applications' do
-      before { get "/applications", params: {}, headers: headers_user1 }
+      before { get '/applications', params: {}, headers: headers_user1 }
       it 'returns a unauthorized message' do
         puts '||||| headers on index request - unauthorised |||||'
         p headers_admin
@@ -112,67 +112,67 @@ RSpec.describe "Applications API", type: :request do
     let!(:jobpost1) { create(:jobpost, author: admin) }
 
     context 'creates a new application with :user role as applicant and valid credentials' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id)
-      }
+      end
       it 'creates a new jobpost in database' do
         expect do
-          post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+          post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         end.to change(Application, :count).by(1)
       end
       it 'returns success message' do
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         expect(json['message']).to match(/Success!. You have applied for the Job./)
       end
     end
 
     context 'creates a new application with :user role as applicant and valid credentials' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id)
-      }
+      end
       it 'creates a new jobpost in database' do
         expect do
-          post "/applications", params: valid_post_attributes.to_json, headers: headers_invalid_user1
+          post '/applications', params: valid_post_attributes.to_json, headers: headers_invalid_user1
         end.to change(Application, :count).by(0)
       end
       it 'returns unauthorised message' do
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         expect(json['message']).to match(/Success!. You have applied for the Job./)
       end
     end
 
     context 'Attept to creates application with :user role and INVALID credentials' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id)
-      }
+      end
       it 'fails to creates a new jobpost in database' do
         expect do
-          post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+          post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         end.to change(Application, :count).by(1)
       end
       it 'returns success message' do
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         expect(json['message']).to match(/Success!. You have applied for the Job./)
       end
     end
 
     context 'Re-applies to the same job post with Valid credentials' do
-      let(:valid_post_attributes) {
+      let(:valid_post_attributes) do
         FactoryBot
           .attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id)
-      }
+      end
       it 'fails to creates a duplicated jobpost in database' do
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         expect do
-          post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+          post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         end.to change(Application, :count).by(0)
       end
       it 'returns failure message' do
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
-        post "/applications", params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
+        post '/applications', params: valid_post_attributes.to_json, headers: headers_user1
         expect(json['message']).to match(/Validation failed: Applicant has already been taken/)
       end
     end
@@ -250,10 +250,10 @@ RSpec.describe "Applications API", type: :request do
     let!(:application2) { create(:application, jobpost_id: jobpost1.id, applicant_id: user2.id) }
 
     # valid updates can only change :enabled property
-    let(:valid_data_change1) {
+    let(:valid_data_change1) do
       FactoryBot
         .attributes_for(:application, jobpost_id: jobpost1.id, applicant_id: user1.id, enabled: false)
-    }
+    end
     let(:invalid_data_change) { FactoryBot.attributes_for(:application, enabled: false) }
 
     # update application1 done by author

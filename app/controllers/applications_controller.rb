@@ -30,13 +30,12 @@ class ApplicationsController < ApplicationController
   end
 
   def update
-    if @application.update(application_params) # if we succeed to update
-      response = { message: 'successfull request', application: @application }
-      json_response(response)
-    else
-      response = { message: 'error updating' }
-      json_response(response)
-    end
+    response = if @application.update(application_params) # if we succeed to update
+                 { message: 'successfull request', application: @application }
+               else
+                 { message: 'error updating' }
+               end
+    json_response(response)
   end
 
   private
@@ -57,7 +56,7 @@ class ApplicationsController < ApplicationController
   end
 
   def admin_updates_only
-    @application = Application.find(params[:id]);
+    @application = Application.find(params[:id])
     return if @application && current_user['role'] == 'admin'
 
     response = { message: Message.only_admin }

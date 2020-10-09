@@ -4,35 +4,35 @@ class Message
   end
 
   def self.invalid_credentials
-    "Invalid credentials"
+    'Invalid credentials'
   end
 
   def self.invalid_token
-    "mmmm, token invalid, are you a hacker?"
+    'mmmm, token invalid, are you a hacker?'
   end
 
   def self.missing_token
-    "Authentication Missing"
+    'Authentication Missing'
   end
 
   def self.unauthorized
-    "Unauthorized request"
+    'Unauthorized request'
   end
 
   def self.only_own_account
-    "Unauthorized. Can only access own account profile."
+    'Unauthorized. Can only access own account profile.'
   end
 
   def self.account_created
-    "Success! - Account has been created."
+    'Success! - Account has been created.'
   end
 
   def self.account_not_created
-    "Sorry, Account cannot be created."
+    'Sorry, Account cannot be created.'
   end
 
   def self.expired_token
-    "Authentication expired, please login again"
+    'Authentication expired, please login again'
   end
 
   def self.only_admin
@@ -48,18 +48,18 @@ class Message
   end
 
   def self.jobpost_created
-    "Success!. New Jobpost created."
+    'Success!. New Jobpost created.'
   end
 
   def self.application_created
-    "Success!. You have applied for the Job."
+    'Success!. You have applied for the Job.'
   end
 
   def self.like
-    "+1"
+    '+1'
   end
 
   def self.dislike
-    "-1"
+    '-1'
   end
 end

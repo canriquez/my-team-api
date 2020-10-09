@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Jobposts API", type: :request do
+RSpec.describe 'Jobposts API', type: :request do
   let!(:admin) { create(:admin_user) }
   let!(:admin1) { create(:admin_user) }
   let!(:headers_admin) { user_type_valid_headers(admin) }
@@ -15,7 +15,7 @@ RSpec.describe "Jobposts API", type: :request do
 
   describe 'GET /jobposts' do
     context 'when user is admin and job post author' do
-      before { get "/jobposts", params: {}, headers: headers_admin }
+      before { get '/jobposts', params: {}, headers: headers_admin }
       it 'returns 2 jobposts' do
         expect(json).not_to be_empty
         expect(json.length).to eq(2)
@@ -27,7 +27,7 @@ RSpec.describe "Jobposts API", type: :request do
     end
 
     context 'when admin is not author in attributes' do
-      before { get "/jobposts", params: {}, headers: headers_admin1 }
+      before { get '/jobposts', params: {}, headers: headers_admin1 }
       it 'returns 0 jobposts' do
         expect(json).to be_empty
         expect(json.length).to eq(0)
@@ -39,7 +39,7 @@ RSpec.describe "Jobposts API", type: :request do
     end
 
     context 'when user attempts unauthorised access to jobposts' do
-      before { get "/jobposts", params: {}, headers: headers_user1 }
+      before { get '/jobposts', params: {}, headers: headers_user1 }
       it 'returns a unauthorized message' do
         expect(json['message']).to match(/Sorry, you need 'admin' rights to access this resource/)
       end
@@ -68,11 +68,11 @@ RSpec.describe "Jobposts API", type: :request do
       let(:valid_post_attributes) { FactoryBot.attributes_for(:jobpost, author_id: admin.id) }
       it 'creates a new jobpost in database' do
         expect do
-          post "/jobposts", params: valid_post_attributes.to_json, headers: headers_admin
+          post '/jobposts', params: valid_post_attributes.to_json, headers: headers_admin
         end.to change(Jobpost, :count).by(1)
       end
       it 'returns success message' do
-        post "/jobposts", params: valid_post_attributes.to_json, headers: headers_admin
+        post '/jobposts', params: valid_post_attributes.to_json, headers: headers_admin
         expect(json['message']).to match(/Success!. New Jobpost created./)
       end
     end

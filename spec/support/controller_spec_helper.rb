@@ -14,8 +14,8 @@ module ControllerSpecHelper
 
   def valid_headers
     {
-      "Authorization" => token_generator(user.id),
-      "Content-Type" => "application/json"
+      'Authorization' => token_generator(user.id),
+      'Content-Type' => 'application/json'
     }
   end
 
@@ -23,8 +23,8 @@ module ControllerSpecHelper
 
   def user_type_valid_headers(user1)
     {
-      "Authorization" => token_generator(user1.id),
-      "Content-Type" => "application/json"
+      'Authorization' => token_generator(user1.id),
+      'Content-Type' => 'application/json'
     }
   end
 
@@ -32,8 +32,8 @@ module ControllerSpecHelper
 
   def invalid_headers
     {
-      "Authorization" => nil,
-      "Content-Type" => "application/json"
+      'Authorization' => nil,
+      'Content-Type' => 'application/json'
     }
   end
 end

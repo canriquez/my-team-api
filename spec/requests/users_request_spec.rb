@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users", type: :request do
+RSpec.describe 'Users', type: :request do
   # initialize test data
   let(:user) { build(:user_user) }
   let(:admin) { build(:admin_user) }
@@ -95,7 +95,7 @@ RSpec.describe "Users", type: :request do
       it 'returns unauthorised message' do
         p json
         expect(json['message'])
-          .to eq("Unauthorized. Can only access own account profile.")
+          .to eq('Unauthorized. Can only access own account profile.')
       end
     end
   end
@@ -142,7 +142,7 @@ RSpec.describe "Users", type: :request do
 
       it 'fails to returns success message' do
         expect(json['message'])
-          .to eq("Unauthorized. Can only access own account profile.")
+          .to eq('Unauthorized. Can only access own account profile.')
       end
     end
   end

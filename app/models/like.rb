@@ -6,6 +6,6 @@ class Like < ApplicationRecord
 
   enum evaluation: %i[dislike like]
 
-  validates :application_id, :uniqueness => { :scope => :admin_id,
-                                              :message => "should have only one like/dislike record per :admin user." }
+  validates :application_id, uniqueness: { scope: :admin_id,
+                                           message: 'should have only one like/dislike record per :admin user.' }
 end
