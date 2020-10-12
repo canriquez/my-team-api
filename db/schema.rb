@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_02_202938) do
+ActiveRecord::Schema.define(version: 2020_10_12_174321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 2020_10_02_202938) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["applicant_id", "jobpost_id"], name: "index_applications_on_applicant_id_and_jobpost_id", unique: true
     t.index ["jobpost_id"], name: "index_applications_on_jobpost_id"
+  end
+
+  create_table "balcklisted_tokens", force: :cascade do |t|
+    t.string "jti"
+    t.bigint "user_id", null: false
+    t.datetime "exp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["jti"], name: "index_balcklisted_tokens_on_jti", unique: true
+    t.index ["user_id"], name: "index_balcklisted_tokens_on_user_id"
   end
 
   create_table "jobposts", force: :cascade do |t|
@@ -55,5 +65,6 @@ ActiveRecord::Schema.define(version: 2020_10_02_202938) do
   end
 
   add_foreign_key "applications", "jobposts"
+  add_foreign_key "balcklisted_tokens", "users"
   add_foreign_key "likes", "applications"
 end

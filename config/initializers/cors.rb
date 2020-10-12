@@ -15,11 +15,12 @@
 #   end
 # end
 
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
+Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true do
     allow do
       #origins '*'
-      origins 'http://192.168.3.111:3000'
+      origins 'http://localhost:3000'
       resource '*', headers: :any, 
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
     end
   end

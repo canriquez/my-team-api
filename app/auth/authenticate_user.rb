@@ -1,13 +1,18 @@
 class AuthenticateUser
-  def initialize(email, password)
+  def initialize(email, password, refresh=false)
     @email = email
     @password = password
+    @refresh =  refresh  #generates a refresh HTTPonly token (longer expiration)
   end
 
   # entry point method
 
   def call
     JsonWebToken.encode(user_id: user.id) if user
+  end
+
+  def call_rt
+    JsonWebToken.encode({user_id: user.id}, (2.days.from_now )) if user
   end
 
   private

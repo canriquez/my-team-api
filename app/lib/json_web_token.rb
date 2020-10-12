@@ -7,21 +7,12 @@ class JsonWebToken
   puts '|| current secret ||'
   p SECRET
 
-  def self.encode(payload, refresh = false)
-    if !refresh 
-      exp = 15.minutes.from_now 
+  def self.encode(payload, exp = 15.minutes.from_now )
       payload[:exp] = exp.to_i
       payload[:now] = Time.zone.now
       payload[:then] = 15.minutes.from_now
       # encodes payload using Rails secret keybase
-    else
-      exp = 2.days.from_now 
-      payload[:exp] = exp.to_i
-      payload[:now] = Time.zone.now
-      payload[:then] = 2.days.from_now
-      # encodes payload using Rails secret keybase
-    end
-    return JWT.encode(payload, SECRET)
+      JWT.encode(payload, SECRET)
   end
 
   def self.decode(token)
