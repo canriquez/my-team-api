@@ -14,6 +14,13 @@ class AuthenticationController < ApplicationController
               {}
             end
 
+    # It Generates a session cookie with indefinite duration until logout
+    new_session = RefreshToken.create(user_id: @user)
+    refresh_token = new_session.crypted_token 
+    cookies.signed[:session] = {
+      value:refresh_token, 
+      httponly: true,
+      same_site: :none }
     json_response(auth_token: auth_token, user: @user)
   end
 

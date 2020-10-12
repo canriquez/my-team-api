@@ -21,12 +21,9 @@ class UsersController < ApplicationController
     refresh = true
     user = User.create!(user_params)
     auth_token = AuthenticateUser.new(user.email, user.password).call
-    refresh_token = AuthenticateUser.new(user.email, user.password, refresh).call_rt
-
-    cookies.signed[:jwt] = {value:refresh_token, httponly: true } #Generates a cookie with 2 days duration
-
+    #refresh_token = AuthenticateUser.new(user.email, user.password, refresh).call_rt
     response = { message: Message.account_created, auth_token: auth_token }
-    cookies.signed[:jwt] = {value: auth_token, httponly: true} #adds the cookie signed
+    #cookies.signed[:jwt] = {value: auth_token, httponly: true} #adds the cookie signed
     json_response(response, :created)
   end
 

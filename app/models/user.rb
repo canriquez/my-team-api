@@ -8,6 +8,9 @@ class User < ApplicationRecord
 
   has_many :job_posts, through: :authored_posts, source: :author
 
+  has_many :blacklisted_tokens, dependent: :delete_all
+  has_many :refresh_tokens, dependent: :delete_all
+
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX, message: 'The email is not valid' }
