@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include Response
   include ExceptionHandler
+  include ActionController::Cookies
 
   # before action to every action in controllers
   before_action :authorize_request
