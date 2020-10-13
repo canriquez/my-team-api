@@ -10,7 +10,7 @@ class JsonWebToken
   def self.encode(payload, exp = 4.hours.from_now)
     payload[:exp] = exp.to_i
     payload[:now] = Time.zone.now
-    payload[:then] = 5.minutes.from_now
+    payload[:then] = 4.minutes.from_now
     # encodes payload using Rails secret keybase
     JWT.encode(payload, SECRET)
   end
