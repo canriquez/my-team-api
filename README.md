@@ -2,7 +2,7 @@
 
 ## Project description
 
-This API serves as a backend for my microverse's full-stack final project, 'My Team Builder'. This repository contains the backend portion of the mentioned project. To get access to the frontend portion, please follow [this link]().
+This API serves as a backend for my microverse's full-stack final project, 'My Team Builder'. This repository contains the backend portion of the mentioned project. To get access to the frontend portion, please follow [this link](https://github.com/canriquez/my-team-builder).
 
 ### Full stack application concept
 
