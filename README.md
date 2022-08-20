@@ -240,7 +240,7 @@ Run the following command:
 
 ```
 $ ruby -v
-ruby 2.6.5p114
+ruby 3.1.2
 
 
 $ rails -v
@@ -338,14 +338,14 @@ Finished in 3.33 seconds (files took 3.13 seconds to load)
 
 ## Built With
 
-- Ruby (2.6.5p114)
+- Ruby (3.1.2)
 - Ruby on Rails (6.0.3.3)
 - PostgreSQL (12.4)
 - RSpec
 - Capybara
 - FactoryBot
 - Shoulda-Matchers
-- Heroku-22 stack 
+- Heroku-22 stack
 
 ## Authors
 
