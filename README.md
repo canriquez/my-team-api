@@ -345,6 +345,7 @@ Finished in 3.33 seconds (files took 3.13 seconds to load)
 - Capybara
 - FactoryBot
 - Shoulda-Matchers
+- Heroku-22 stack 
 
 ## Authors
 
