@@ -240,11 +240,11 @@ Run the following command:
 
 ```
 $ ruby -v
-ruby 3.1.2
+ruby 3.1.2p20 (2022-04-12 revision 4491bb740a) [x86_64-darwin21]
 
 
 $ rails -v
-Rails 6.0.3.3
+Rails 7.0.3.1
 ```
 
 - Ruby: If you don't get that result, follow this [link](https://www.ruby-lang.org/en/documentation/installation/) and install Ruby in your local environment.
@@ -305,15 +305,16 @@ To start the development server run:
 rails s
 
 => Booting Puma
-=> Rails 6.0.3.3 application starting in development
-=> Run `rails server --help` for more startup options
+=> Rails 7.0.3.1 application starting in development 
+=> Run `bin/rails server --help` for more startup options
 Puma starting in single mode...
-* Version 4.3.6 (ruby 2.6.5-p114), codename: Mysterious Traveller
+* Version 4.3.12 (ruby 3.1.2-p20), codename: Mysterious Traveller
 * Min threads: 5, max threads: 5
 * Environment: development
 * Listening on tcp://127.0.0.1:3000
 * Listening on tcp://[::1]:3000
 Use Ctrl-C to stop
+
 
 ```
 
