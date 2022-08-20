@@ -339,7 +339,7 @@ Finished in 3.33 seconds (files took 3.13 seconds to load)
 ## Built With
 
 - Ruby (3.1.2)
-- Ruby on Rails (6.0.3.3)
+- Ruby on Rails (7.0.1)
 - PostgreSQL (12.4)
 - RSpec
 - Capybara
